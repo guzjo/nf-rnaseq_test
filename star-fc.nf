@@ -3,6 +3,7 @@
 /* enable DSL2*/
 nextflow.enable.dsl=2
 
+
 /*================================================================
 The EPIGEN LAB presents...
 
@@ -26,11 +27,14 @@ Authors:
 
 ================================================================*/
 
+
+
 /*
   Define pipeline version
   If you bump the number, remember to bump it in the header description at the begining of this script too
 */
 version = "0.1"
+
 
 
 /*
@@ -40,9 +44,12 @@ version = "0.1"
 pipeline_name = "nf-STAR+fc"
 
 
-/* Define the help message as a function to call when needed */
 
-/* def helpMessage() { */
+/*
+Define the help message as a function to call when needed
+*/
+
+def helpMessage() { 
 
 	log.info"""
   ==========================================
@@ -68,6 +75,41 @@ pipeline_name = "nf-STAR+fc"
 	      instead of starting over
 	      Read more here: https://www.nextflow.io/docs/latest/getstarted.html#getstart-resume
     --help           <- Shows Pipeline Information
-	--version        <- Show version
+    --version        <- Show version
 	""".stripIndent()
-/* } */
+} 
+
+
+
+/*
+  Initiate default values for parameters
+  to avoid "WARN: Access to undefined parameter" messages
+*/
+
+params.fastq_dir = false  //if no inputh path is provided, value is false to provoke the error during the parameter validation block
+params.host = false  //if no inputh path is provided, value is false to provoke the error during the parameter validation block
+params.help = false //default is false to not trigger help message automatically at every run
+params.version = false //default is false to not trigger version message automatically at every run
+
+
+
+/*
+  If the user inputs the --help flag
+  print the help message and exit pipeline
+*/
+
+if (params.help){
+	helpMessage()
+	exit 0
+}
+
+
+
+/*
+  If the user inputs the --version flag
+  print the pipeline version
+*/
+if (params.version){
+	println "${pipeline_name} v${version}"
+	exit 0
+}
