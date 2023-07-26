@@ -33,7 +33,7 @@ Authors:
 version = "0.1"
 
 
-/*/
+/*
   Define pipeline Name
   This will be used as a name to include in the results and intermediates directory names
 */
@@ -42,7 +42,8 @@ pipeline_name = "nf-STAR+fc"
 
 /* Define the help message as a function to call when needed */
 
-def helpMessage() {
+/* def helpMessage() { */
+
 	log.info"""
   ==========================================
   ${pipeline_name}
@@ -55,7 +56,7 @@ def helpMessage() {
 	nextflow run ${pipeline_name}.nf 
     
     --fastq_dir <path to fastq files> 
-    --fasta <path to human reference fasta>
+    --star_index <path to star index files>
     --gtf <path to human reference gtf>
     --output_dir <directory where results, intermediate and log files will be stored>
     -resume	   <- Use cached results if the executed project has been run before;
@@ -69,4 +70,4 @@ def helpMessage() {
     --help           <- Shows Pipeline Information
 	--version        <- Show version
 	""".stripIndent()
-}
+/* } */
