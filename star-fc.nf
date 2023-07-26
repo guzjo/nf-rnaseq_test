@@ -113,3 +113,61 @@ if (params.version){
 	println "${pipeline_name} v${version}"
 	exit 0
 }
+
+
+
+/*
+  Define the Nextflow version under which this pipeline was developed or successfuly tested
+*/
+nextflow_required_version = '22.10.7.5853'
+
+
+
+/*
+  Try Catch to verify compatible Nextflow version
+  If user Nextflow version is lower than the required version pipeline will continue
+  but a message is printed to tell the user maybe it's a good idea to update her/his Nextflow
+*/
+try {
+	if( ! nextflow.version.matches(">= $nextflow_required_version") ){
+		throw GroovyException('Your Nextflow version is older than Pipeline required version')
+	}
+} catch (all) {
+	log.error "-----\n" +
+			"  This pipeline requires Nextflow version: $nextflow_required_version \n" +
+      "  But you are running version: $workflow.nextflow.version \n" +
+			"  The pipeline will continue but some things may not work as intended\n" +
+			"  You may want to run `nextflow self-update` to update Nextflow\n" +
+			"============================================================"
+}
+
+
+
+/*
+========================================================================================
+    VALIDATE INPUTS
+========================================================================================
+*/
+
+
+
+/* Check if the input directory is provided
+    if it was not provided, it keeps the 'false' value assigned in the parameter initiation block above
+    and this test fails
+*/
+if ( !params.fastq_dir) {
+  log.error " Please provide the --fastq_dir \n\n" +
+  " For more information, execute: nextflow run ${pipeline_name}.nf --help"
+  exit 1
+}
+
+
+
+/*
+Output directory definition
+Default value to create directory is the parent dir of --input_dir
+*/
+params.output_dir = file(params.fastq_dir).getParent() //!! maybe creates bug, should check
+
+
+
