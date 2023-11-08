@@ -273,11 +273,11 @@ process STAR ALIGNMENT {
 }
 */
 
-def get_sample_prefix = { file -> file.name.toString().tokenize('R')[0] }
+// def get_sample_prefix = { file -> file.name.toString().tokenize('R')[0] }
 Channel
   .fromPath("${params.fastq_dir}/SRR*_{1,2}.fq.gz")
-  .map{file -> tuple(get_sample_prefix(file), file) }
-      .groupTuple()
+//  .map{file -> tuple(get_sample_prefix(file), file) }
+//      .groupTuple()
   .set{read_pairs_ch}
 
 read_pairs_ch.view()
